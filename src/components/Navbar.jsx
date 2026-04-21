@@ -36,23 +36,7 @@ export default function Navbar() {
           ADITI S
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <a key={link.label} href={link.href}
-              className="relative group"
-              style={{ fontFamily: "'Space Mono',monospace", fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.55)' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'white'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
-            >
-              {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-px group-hover:w-full transition-all duration-300"
-                style={{ background: 'var(--hot-pink)' }} />
-            </a>
-          ))}
-          <a href="mailto:aditii.s5379@gmail.com" className="jelly-btn jelly-pink" style={{ padding: '10px 22px', fontSize: 11 }}>
-            Hire Me ✦
-          </a>
-        </nav>
+        
 
         <button className="md:hidden flex flex-col gap-1.5 p-2" onClick={() => setMenuOpen(!menuOpen)}>
           <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />

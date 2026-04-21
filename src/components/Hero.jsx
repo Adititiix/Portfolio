@@ -87,12 +87,6 @@ export default function Hero() {
         </div>
       </FloatingEl>
 
-      <FloatingEl style={{ bottom: '35%', left: '2%' }} delay={1.2}>
-        <div className="sticker" style={{ background: 'var(--hot-pink)', color: 'white', transform: 'rotate(-5deg)', fontSize: 10 }}>
-          🎓 SRM • 8.75 CGPA
-        </div>
-      </FloatingEl>
-
       <FloatingEl style={{ bottom: '20%', right: '4%' }} delay={0.8}>
         <div className="sticker" style={{ background: '#AAFF00', color: '#000', transform: 'rotate(8deg)', fontSize: 10 }}>
           🚀 6+ Projects
