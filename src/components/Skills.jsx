@@ -1,63 +1,109 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-
-const skillGroups = [
-  { category: 'Frontend', icon: '🎨', color: 'var(--hot-pink)', bg: 'rgba(255,31,142,0.08)', border: 'rgba(255,31,142,0.3)', skills: ['React', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS'] },
-  { category: 'Backend', icon: '⚙️', color: 'var(--electric-blue)', bg: 'rgba(0,180,255,0.08)', border: 'rgba(0,180,255,0.3)', skills: ['Flask', 'Node.js', 'REST APIs', 'Firebase', 'MongoDB', 'PostgreSQL', 'MySQL'] },
-  { category: 'AI / ML', icon: '🤖', color: 'var(--yellow)', bg: 'rgba(255,229,0,0.08)', border: 'rgba(255,229,0,0.3)', skills: ['Python', 'NLP', 'RAG', 'TensorFlow', 'PyTorch', 'Scikit-learn'] },
-  { category: 'Cybersecurity', icon: '🔐', color: '#AAFF00', bg: 'rgba(170,255,0,0.07)', border: 'rgba(170,255,0,0.3)', skills: ['Secure Systems', 'Threat Awareness', 'Network Fundamentals'] },
-  { category: 'Soft Skills', icon: '💬', color: 'var(--electric-blue)', bg: 'rgba(0,180,255,0.07)', border: 'rgba(0,180,255,0.25)', skills: ['Public Speaking', 'Teamwork', 'Leadership', 'Communication'] },
-]
+import { useMemo, useState } from 'react';
+import { CornerDownRight } from 'lucide-react';
+import { SKILL_GROUPS } from '../data/content.js';
+import Reveal from './Reveal.jsx';
+import SectionHeader from './SectionHeader.jsx';
+import SkillLogo from './SkillLogo.jsx';
 
 export default function Skills() {
-  const [hovered, setHovered] = useState(null)
+  const [selected, setSelected] = useState({ group: 'languages', name: 'Python' });
+
+  const detail = useMemo(() => {
+    const group = SKILL_GROUPS.find((g) => g.id === selected.group);
+    const skill = group?.skills.find((s) => s.name === selected.name);
+    return skill ? { group, skill } : null;
+  }, [selected]);
 
   return (
-    <section id="skills" className="reveal py-24 md:py-36" style={{ background: '#0A0A0A' }}>
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center gap-4 mb-12">
-          <span className="sec-label" style={{ color: 'var(--electric-blue)' }}>✦ 02 / Skills</span>
-          <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, rgba(0,180,255,0.4), transparent)' }} />
-        </div>
-        <h2 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(60px,9vw,100px)', lineHeight: 0.88 }} className="mb-14">
-          <span className="text-white block">TECH</span>
-          <span className="grad-blue-pink block">STACK.</span>
-        </h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {skillGroups.map((group, i) => (
-            <motion.div key={group.category}
-              initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.6 }}
-              onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
-              className="rounded-2xl p-6 relative overflow-hidden shine-hover"
-              style={{
-                background: hovered === i ? group.bg : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${hovered === i ? group.border : 'rgba(255,255,255,0.07)'}`,
-                transform: hovered === i ? 'translateY(-4px)' : 'none',
-                transition: 'all 0.3s ease',
-                boxShadow: hovered === i ? `0 12px 40px ${group.color}15` : 'none',
-              }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl"
-                style={{ background: group.color, opacity: hovered === i ? 1 : 0.25 }} />
-              <div className="flex items-center gap-3 mb-5">
-                <span className="text-2xl">{group.icon}</span>
-                <span className="font-mono text-xs tracking-widest uppercase font-bold" style={{ color: group.color }}>{group.category}</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {group.skills.map(skill => (
-                  <span key={skill} className="text-xs px-3 py-1.5 rounded-full font-mono transition-all duration-200"
-                    style={{
-                      background: hovered === i ? group.bg : 'rgba(255,255,255,0.04)',
-                      color: hovered === i ? group.color : 'rgba(255,255,255,0.5)',
-                      border: `1px solid ${hovered === i ? group.border : 'rgba(255,255,255,0.07)'}`,
-                    }}>{skill}</span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+    <section id="skills" className="section section--tint" aria-labelledby="skills-title">
+      <div className="container">
+        <SectionHeader
+          id="skills-title"
+          index="02"
+          eyebrow="Toolkit"
+          title="Skills"
+          intro="Technologies, techniques, and core concepts grouped by area. Select any tile to see where it was used."
+        />
+
+        <div className="skills">
+          <div className="skills__groups">
+            {SKILL_GROUPS.map((group, i) => (
+              <Reveal
+                key={group.id}
+                className={`skill-group ${group.concepts ? 'skill-group--concepts' : ''}`}
+                delay={i * 40}
+              >
+                <h3 className="skill-group__label mono" id={`skill-group-${group.id}`}>
+                  {group.label}
+                  <span className="skill-group__count">{String(group.skills.length).padStart(2, '0')}</span>
+                </h3>
+                <ul
+                  className="skill-grid"
+                  aria-labelledby={`skill-group-${group.id}`}
+                  style={{ '--count': group.skills.length }}
+                >
+                  {group.skills.map((skill) => {
+                    const isActive = selected.group === group.id && selected.name === skill.name;
+                    return (
+                      <li key={skill.name}>
+                        <button
+                          type="button"
+                          className={`skill-tile ${isActive ? 'is-active' : ''}`}
+                          aria-pressed={isActive}
+                          aria-controls="skill-detail"
+                          onClick={() => setSelected({ group: group.id, name: skill.name })}
+                        >
+                          <span className="skill-tile__logo">
+                            <SkillLogo logo={skill.logo} name={skill.name} />
+                          </span>
+                          <span className="skill-tile__label">{skill.name}</span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal as="aside" className="skill-detail" delay={120}>
+            <div id="skill-detail" aria-live="polite">
+              {detail && (
+                <>
+                  <div className="skill-detail__head">
+                    <span className="skill-detail__logo">
+                      <SkillLogo logo={detail.skill.logo} name={detail.skill.name} />
+                    </span>
+                    <div>
+                      <p className="mono skill-detail__kicker">{detail.group.label}</p>
+                      <p className="skill-detail__name">{detail.skill.name}</p>
+                    </div>
+                  </div>
+                  {detail.group.concepts ? (
+                    <p className="skill-detail__empty">A core computer science concept.</p>
+                  ) : (
+                    <>
+                      <p className="skill-detail__label mono">Used in</p>
+                      {detail.skill.usedIn.length > 0 ? (
+                        <ul className="skill-detail__list">
+                          {detail.skill.usedIn.map((place) => (
+                            <li key={place}>
+                              <CornerDownRight size={16} strokeWidth={1.75} aria-hidden="true" />
+                              {place}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="skill-detail__empty">Not yet featured in a project on this page.</p>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
-  )
+  );
 }
