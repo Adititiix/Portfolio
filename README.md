@@ -1,100 +1,32 @@
-# 🚀 Aditi S — Portfolio Website
+# Aditi S — Developer Portfolio
 
-A premium, animated personal portfolio built with React + Vite + Tailwind CSS + Framer Motion.
+React + Vite single-page portfolio.
 
-## ✨ Features
-
-- **Custom cursor** with smooth lag effect
-- **Animated loading screen** with morphing blob
-- **Scroll progress bar** at the top
-- **Text scramble animations** on hero
-- **Blob-framed profile photo** with rotating rings
-- **Scroll-triggered section reveals**
-- **Interactive project cards** with expand modal
-- **Floating animated stickers**
-- **Marquee ticker strip**
-- **Easter egg** — Press `?` on keyboard!
-- **Magnetic buttons** with hover states
-- **Fully responsive** — mobile, tablet, desktop
-
-## 🛠️ Tech Stack
-
-- React 18 + Vite
-- Tailwind CSS 3
-- Framer Motion 11
-- Google Fonts (Bebas Neue, DM Sans, Space Mono)
-
-## ▶️ Running Locally
+## Run
 
 ```bash
 npm install
-npm run dev
+npm run dev      # local development
+npm run build    # production build in dist/
+npm run preview  # serve the production build
 ```
 
-Visit: http://localhost:5173
+## Editing content
 
-## 📦 Building for Production
+All text, links, metrics, skills, and experience live in `src/data/content.js`.
+Components in `src/components/` only render that data.
 
-```bash
-npm run build
-npm run preview
-```
+## Adding project screenshots and videos
 
-## 🌐 Deploying on Vercel
+1. Put image files in `public/projects/<project id>/` (for example `public/projects/hirelens/overview.png`).
+2. In `src/data/content.js`, fill that project's `media` field:
+   - `thumbnail`: shown on the card and first in the modal gallery.
+   - `gallery`: extra screenshots, shown only in the modal.
+   - `video`: `{ url, title }`. YouTube, Vimeo, Loom, or a direct .mp4/.webm file is embedded; any other URL appears as a link.
+3. Give every image a short, accurate `alt` description.
 
-1. Push code to GitHub
-2. Go to [vercel.com](https://vercel.com) → New Project
-3. Import your GitHub repo
-4. Framework: **Vite**
-5. Build command: `npm run build`
-6. Output directory: `dist`
-7. Click **Deploy** ✅
+Projects without media show a labelled illustration, and the gallery and video areas stay hidden.
 
-Or use Vercel CLI:
-```bash
-npx vercel
-```
+## Deploy
 
-## 📁 Project Structure
-
-```
-aditi-portfolio/
-├── public/
-│   ├── aditi.jpg          # Profile photo
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   ├── LoadingScreen.jsx
-│   │   ├── Cursor.jsx
-│   │   ├── Navbar.jsx
-│   │   ├── Hero.jsx
-│   │   ├── About.jsx
-│   │   ├── Skills.jsx
-│   │   ├── Projects.jsx
-│   │   ├── Experience.jsx
-│   │   ├── Education.jsx
-│   │   ├── Achievements.jsx
-│   │   ├── WhyHireMe.jsx
-│   │   ├── Contact.jsx
-│   │   ├── Footer.jsx
-│   │   └── EasterEgg.jsx
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-├── index.html
-├── package.json
-├── tailwind.config.js
-├── postcss.config.js
-└── vite.config.js
-```
-
-## 🎨 Customization
-
-- Edit content directly in each component file
-- Colors defined as CSS variables in `src/index.css`
-- Replace `public/aditi.jpg` with updated photo
-- Update links in `Contact.jsx` and `Navbar.jsx`
-
----
-
-Designed to be remembered. Built by Aditi S.
+The `dist/` output is static and can be hosted on Vercel, Netlify, or GitHub Pages without extra configuration.
